@@ -1,0 +1,16 @@
+/*page14*/
+@media (min-width: 890px) {
+  nav {
+    float: left;
+    min-width: 30px;
+  }
+  section {
+    display: inline-block;
+  }
+}
+
+@media (max-width: 890px) {
+  nav li {
+    display: inline;
+  }
+}

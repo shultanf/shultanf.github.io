@@ -1,0 +1,13 @@
+/*page8,12,16*/
+nav {
+  position: fixed;
+  display: inline-block;
+  vertical-align: top;
+  max-width: 300px;
+  margin-top: 20px;
+  background-color: #ffd73f;
+  left: 10%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
