@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benang Digital — Selamat Datang, Kreator</title>
+<meta name="description" content="Selamat bergabung di Benang Digital. Kenali agensi, ikuti modul belajar, dan mulai rajut kariermu sebagai kreator TikTok.">
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ THREAD (scroll spine) — decorative, hidden from a11y tree ============ -->
+<svg class="thread-spine" id="threadSpine" viewBox="0 0 4 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  <path id="threadTrackPath" class="thread-track" d="M2,0 L2,1000" />
+  <path id="threadFillPath" class="thread-fill" d="M2,0 L2,1000" />
+</svg>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-inner">
+    <a href="#beranda" class="brand" aria-label="Benang Digital, kembali ke atas">
+      <img src="assets/logo-light-horizontal.png" alt="Benang Digital" class="brand-logo" width="180" height="60">
+    </a>
+
+    <nav class="site-nav" id="siteNav" aria-label="Navigasi utama">
+      <a href="#tentang" data-nav>Tentang</a>
+      <a href="#modul" data-nav>Modul Belajar</a>
+      <a href="#faq" data-nav>FAQ</a>
+      <a href="#kontak" data-nav>Kontak</a>
+    </nav>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileNav" aria-label="Buka menu navigasi">
+      <svg class="knot-icon" viewBox="0 0 40 40" width="30" height="30" aria-hidden="true">
+        <path class="knot-line knot-line-a" d="M8,13 L32,13" />
+        <path class="knot-line knot-line-b" d="M8,20 L32,20" />
+        <path class="knot-line knot-line-c" d="M8,27 L32,27" />
+      </svg>
+    </button>
+  </div>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Navigasi mobile">
+    <div class="mobile-nav-inner">
+      <a href="#tentang" data-nav>Tentang Kami</a>
+      <a href="#modul" data-nav>Modul Belajar</a>
+      <a href="#faq" data-nav>Pertanyaan Umum</a>
+      <a href="#kontak" data-nav>Kontak PIC</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="beranda">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <p class="hero-eyebrow">Untuk kreator yang baru bergabung</p>
+        <h1 class="hero-title">
+          Halo, Kreator.<br>
+          Selamat merajut karier<br>
+          bareng <span class="brand-word">Benang&nbsp;Digital.</span>
+        </h1>
+        <p class="hero-lede">
+          Satu kreator itu satu benang. Sendirian, kuat menahan tarikan kecil.
+          Tapi begitu banyak benang dirajut jadi satu, hasilnya jauh lebih kuat —
+          itu yang kami bangun bareng kamu, mulai hari ini.
+        </p>
+        <div class="hero-actions">
+          <a href="#modul" class="btn btn-primary" data-scrollto>
+            <span>Mulai dari modul belajar</span>
+          </a>
+          <a href="#tentang" class="btn btn-ghost" data-scrollto>
+            <span>Kenalan dulu sama kami</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-mark" aria-hidden="true">
+        <svg id="heroKnot" class="hero-knot" viewBox="0 0 300 300" width="300" height="300">
+          <!-- Two crossing ribbon strokes with rounded ends, echoing the
+               Benang Digital mark. Drawn in on load, one time only. -->
+          <path class="knot-path knot-path-shadow" d="M75,75 C110,110 140,140 150,150 C160,160 190,190 225,225" />
+          <path class="knot-path knot-path-1" d="M225,75 C190,110 160,140 150,150 C140,160 110,190 75,225" />
+          <path class="knot-path knot-path-2" d="M75,75 C110,110 140,140 150,150 C160,160 190,190 225,225" />
+        </svg>
+      </div>
+    </div>
+
+    <button class="scroll-cue" data-scrollto data-target="#tentang" aria-label="Gulir ke bawah untuk lanjut membaca">
+      <span class="scroll-cue-thread"></span>
+    </button>
+  </section>
+
+  <!-- ============ TENTANG ============ -->
+  <section class="about" id="tentang">
+    <div class="wrap about-inner">
+      <div class="section-marker" data-knot></div>
+
+      <div class="about-text">
+        <h2 class="section-title">Siapa kami, dan kenapa kamu di sini</h2>
+        <p class="section-lede">
+          Benang Digital menaungi kreator TikTok yang serius membangun penghasilan lewat affiliate
+          dan kerja sama brand. Tugas kami sederhana: mengurus hal-hal teknis di belakang layar,
+          supaya kamu bisa fokus bikin konten yang bagus.
+        </p>
+
+        <ul class="pillar-list">
+          <li class="pillar">
+            <span class="pillar-tick" aria-hidden="true"></span>
+            <div>
+              <h3>Kurasi campaign &amp; brand</h3>
+              <p>Kami menyaring campaign yang cocok dengan gaya kontenmu, bukan sekadar comot semua yang ada.</p>
+            </div>
+          </li>
+          <li class="pillar">
+            <span class="pillar-tick" aria-hidden="true"></span>
+            <div>
+              <h3>Data &amp; laporan performa</h3>
+              <p>GMV, komisi, dan performa konten kamu terpantau lewat dashboard, bukan tebak-tebakan.</p>
+            </div>
+          </li>
+          <li class="pillar">
+            <span class="pillar-tick" aria-hidden="true"></span>
+            <div>
+              <h3>Pendampingan konten</h3>
+              <p>PIC yang bisa kamu tanya langsung soal produk, hook, sampai jadwal live selling.</p>
+            </div>
+          </li>
+          <li class="pillar">
+            <span class="pillar-tick" aria-hidden="true"></span>
+            <div>
+              <h3>Komunitas sesama kreator</h3>
+              <p>Kamu nggak sendirian — ada ruang buat tukar cerita dan belajar dari kreator lain.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MODUL BELAJAR ============ -->
+  <section class="modules" id="modul">
+    <div class="wrap">
+      <div class="section-marker" data-knot></div>
+      <div class="modules-head">
+        <h2 class="section-title">Modul belajar, simpul demi simpul</h2>
+        <p class="section-lede">
+          Enam video pendek buat mulai perjalananmu — dari dasar affiliate sampai bangun personal
+          branding. Nggak harus urut, tapi kalau baru mulai, urutan ini paling nyambung.
+        </p>
+      </div>
+
+      <ol class="module-path" id="modulePath" aria-label="Daftar modul belajar">
+        <!-- module cards are rendered here by js/main.js from the MODULES array -->
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="faq" id="faq">
+    <div class="wrap faq-inner">
+      <div class="section-marker" data-knot></div>
+      <h2 class="section-title">Pertanyaan yang sering ditanyakan</h2>
+
+      <div class="faq-list" id="faqList">
+        <!-- rendered by js/main.js from the FAQS array -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KONTAK / FOOTER ============ -->
+  <footer class="contact" id="kontak">
+    <div class="section-marker section-marker-dark" data-knot></div>
+    <div class="wrap contact-inner">
+      <div class="contact-text">
+        <h2 class="section-title section-title-dark">Ada yang mau ditanyakan?</h2>
+        <p class="section-lede section-lede-dark">
+          PIC kamu selalu bisa dihubungi lewat WhatsApp. Untuk urusan lain, kontak di bawah ini
+          juga terbuka.
+        </p>
+
+        <a class="btn btn-primary btn-wa" href="https://wa.me/6280000000000" target="_blank" rel="noopener">
+          <span>Chat PIC di WhatsApp</span>
+        </a>
+
+        <ul class="contact-list">
+          <li><span>Instagram</span><a href="https://instagram.com/benangdigital" target="_blank" rel="noopener">@benangdigital</a></li>
+          <li><span>Email</span><a href="mailto:halo@benangdigital.id">halo@benangdigital.id</a></li>
+          <li><span>Jam operasional PIC</span><strong>Senin–Jumat, 09.00–18.00 WIB</strong></li>
+        </ul>
+      </div>
+
+      <div class="contact-mark">
+        <img src="assets/logo-dark-stacked.png" alt="Benang Digital" width="180" height="222">
+      </div>
+    </div>
+
+    <div class="wrap footer-bottom">
+      <p>© <span id="year"></span> Benang Digital. Dibuat untuk kreator, oleh tim Benang Digital.</p>
+    </div>
+  </footer>
+
+</main>
+
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,641 @@
+/* ==========================================================================
+   BENANG DIGITAL — Creator welcome & learning hub
+   Design tokens pulled straight from the brand mark:
+     cream  #F4EBDC   (logo background)
+     ink    #2D2D2D   (logo dark background, used as ink/dark surface)
+     thread #FF6918   (logo orange)
+     deep   #E95200   (logo orange shadow)
+   ========================================================================== */
+
+:root{
+  --cream:       #F4EBDC;
+  --paper:       #FBF6ED;   /* slightly lighter surface, for cards on cream */
+  --ink:         #2D2A26;
+  --ink-soft:    #6B635A;
+  --thread:      #FF6918;
+  --thread-deep: #E95200;
+  --thread-pale: #FDE1CB;
+  --cream-on-dark: #F4EBDC;
+  --line: rgba(45,42,38,0.14);
+  --line-on-dark: rgba(244,235,220,0.16);
+
+  --font-display: 'Fredoka', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+
+  --wrap: 1120px;
+  --radius: 20px;
+  --ease: cubic-bezier(.22,.9,.3,1);
+}
+
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+}
+
+body{
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img{ max-width: 100%; display: block; }
+a{ color: inherit; }
+
+.wrap{
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+h1,h2,h3{
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+
+.section-title{
+  font-size: clamp(1.7rem, 3.4vw, 2.35rem);
+  max-width: 22ch;
+}
+.section-title-dark{ color: var(--cream-on-dark); }
+
+.section-lede{
+  margin: 16px 0 0;
+  max-width: 58ch;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+}
+.section-lede-dark{ color: rgba(244,235,220,0.78); }
+
+/* Focus visibility, kept consistent across custom controls */
+a:focus-visible,
+button:focus-visible,
+.faq-q:focus-visible{
+  outline: 2px solid var(--thread-deep);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ==========================================================================
+   THREAD SPINE — the one bold, orchestrated motif.
+   A single continuous line runs down the left margin of the page; it fills
+   in orange as the person scrolls, and "ties" a knot at each section.
+   Hidden on narrow screens where there isn't margin room for it.
+   ========================================================================== */
+.thread-spine{
+  position: fixed;
+  left: 36px;
+  top: 0;
+  height: 100vh;
+  width: 4px;
+  z-index: 5;
+  pointer-events: none;
+}
+.thread-track{
+  stroke: var(--line);
+  stroke-width: 2.4;
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+.thread-fill{
+  stroke: var(--thread);
+  stroke-width: 2.4;
+  fill: none;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000; /* set dynamically by JS to reflect scroll progress */
+}
+@media (max-width: 880px){
+  .thread-spine{ display: none; }
+}
+
+.section-marker{
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2.4px solid var(--line);
+  background: var(--cream);
+  margin: 0 0 28px calc(36px - 24px - 7px + 24px); /* aligns optically with thread on wide screens */
+  transition: background .4s var(--ease), border-color .4s var(--ease), transform .4s var(--ease);
+}
+.section-marker.is-tied{
+  background: var(--thread);
+  border-color: var(--thread-deep);
+  transform: scale(1.15);
+}
+.section-marker-dark{
+  background: var(--ink);
+  border-color: var(--line-on-dark);
+}
+.section-marker-dark.is-tied{
+  background: var(--thread);
+  border-color: var(--thread);
+}
+@media (max-width: 880px){
+  .section-marker{ margin-left: 0; }
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+.site-header{
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(244,235,220,0.92);
+  backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.header-inner{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 76px;
+}
+.brand-logo{ height: 40px; width: auto; }
+
+.site-nav{
+  display: none;
+  gap: 30px;
+}
+.site-nav a{
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.96rem;
+  color: var(--ink);
+  position: relative;
+  padding-bottom: 4px;
+}
+.site-nav a::after{
+  content: "";
+  position: absolute;
+  left: 0; right: 100%;
+  bottom: 0;
+  height: 2px;
+  background: var(--thread);
+  transition: right .32s var(--ease);
+}
+.site-nav a:hover::after,
+.site-nav a:focus-visible::after{ right: 0; }
+
+@media (min-width: 880px){
+  .site-nav{ display: flex; }
+  .nav-toggle{ display: none; }
+}
+
+/* Mobile nav toggle — the hamburger lines rearrange into the brand's X knot
+   when opened, instead of a generic X-close icon. */
+.nav-toggle{
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+}
+.knot-line{
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  transition: transform .38s var(--ease), opacity .28s var(--ease), d .38s var(--ease);
+  transform-origin: 20px 20px;
+}
+.nav-toggle[aria-expanded="true"] .knot-line-a{ transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .knot-line-b{ opacity: 0; }
+.nav-toggle[aria-expanded="true"] .knot-line-c{ transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-nav{
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .38s var(--ease);
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.mobile-nav.is-open{ grid-template-rows: 1fr; }
+.mobile-nav-inner{ min-height: 0; overflow: hidden; }
+.mobile-nav a{
+  display: block;
+  padding: 16px 24px;
+  text-decoration: none;
+  font-weight: 600;
+  border-top: 1px solid var(--line);
+}
+@media (min-width: 880px){
+  .mobile-nav{ display: none; }
+}
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+.hero{
+  position: relative;
+  padding: 64px 0 80px;
+  overflow: hidden;
+}
+.hero-inner{
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 40px;
+}
+.hero-eyebrow{
+  margin: 0 0 14px;
+  color: var(--thread-deep);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.hero-title{
+  font-size: clamp(2.3rem, 5vw, 3.4rem);
+}
+.brand-word{ color: var(--thread-deep); }
+.hero-lede{
+  margin: 22px 0 0;
+  max-width: 46ch;
+  color: var(--ink-soft);
+  font-size: 1.08rem;
+}
+.hero-actions{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 26px;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.98rem;
+  text-decoration: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform .22s var(--ease), background .22s var(--ease), color .22s var(--ease), border-color .22s var(--ease);
+}
+.btn:active{ transform: scale(0.97); }
+.btn-primary{
+  background: var(--thread);
+  color: #221600;
+}
+.btn-primary:hover{ background: var(--thread-deep); color: #fff; }
+.btn-ghost{
+  border-color: var(--ink);
+  color: var(--ink);
+  background: transparent;
+}
+.btn-ghost:hover{ border-color: var(--thread-deep); color: var(--thread-deep); }
+
+.hero-mark{
+  display: flex;
+  justify-content: center;
+}
+.hero-knot{ max-width: 280px; width: 100%; }
+.knot-path{
+  fill: none;
+  stroke: var(--thread);
+  stroke-width: 30;
+  stroke-linecap: round;
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+  animation: draw-knot 1s var(--ease) 0.15s forwards;
+}
+.knot-path-shadow{
+  stroke: var(--thread-deep);
+  stroke-width: 30;
+  opacity: 0.55;
+  transform: translate(5px, -5px);
+  animation-delay: 0s;
+}
+.knot-path-2{
+  animation-delay: 0.22s;
+}
+@keyframes draw-knot{
+  to{ stroke-dashoffset: 0; }
+}
+@media (prefers-reduced-motion: reduce){
+  .knot-path{ animation: none; stroke-dashoffset: 0; }
+}
+
+@media (max-width: 880px){
+  .hero-inner{ grid-template-columns: 1fr; text-align: left; }
+  .hero-mark{ order: -1; margin-bottom: 8px; }
+  .hero-knot{ max-width: 180px; }
+}
+
+.scroll-cue{
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  width: 26px;
+  height: 42px;
+  border-radius: 100px;
+  border: 2px solid var(--ink);
+  background: none;
+  cursor: pointer;
+  opacity: 0.55;
+}
+.scroll-cue-thread{
+  position: absolute;
+  left: 50%;
+  top: 7px;
+  width: 3px;
+  height: 10px;
+  background: var(--thread-deep);
+  border-radius: 3px;
+  transform: translateX(-50%);
+  animation: cue-drop 1.8s ease-in-out infinite;
+}
+@keyframes cue-drop{
+  0%,100%{ top: 7px; opacity: 1; }
+  50%{ top: 20px; opacity: 0.4; }
+}
+@media (prefers-reduced-motion: reduce){
+  .scroll-cue-thread{ animation: none; }
+}
+@media (max-width: 600px){ .scroll-cue{ display: none; } }
+
+/* ==========================================================================
+   ABOUT
+   ========================================================================== */
+.about{ padding: 90px 0 70px; }
+.about-inner{ max-width: 760px; }
+.pillar-list{
+  list-style: none;
+  margin: 40px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 26px;
+}
+.pillar{
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+.pillar-tick{
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: var(--thread-pale);
+  position: relative;
+}
+.pillar-tick::after{
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background: var(--thread);
+}
+.pillar h3{
+  font-size: 1.08rem;
+  margin-bottom: 6px;
+}
+.pillar p{
+  margin: 0;
+  color: var(--ink-soft);
+  max-width: 52ch;
+}
+
+/* ==========================================================================
+   MODULES — presented as numbered stops ("simpul") along the thread,
+   since this content genuinely is a sequence.
+   ========================================================================== */
+.modules{ padding: 70px 0 80px; background: var(--paper); }
+.modules-head{ max-width: 700px; }
+
+.module-path{
+  list-style: none;
+  margin: 44px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 18px;
+}
+
+.module-card{
+  border: 1px solid var(--line);
+  background: var(--cream);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.module-head{
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 20px;
+  width: 100%;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+.module-num{
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid var(--thread);
+  color: var(--thread-deep);
+  font-family: var(--font-display);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+}
+.module-text{
+  display: block;
+  min-width: 0;
+}
+.module-title{
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.08rem;
+  margin: 0 0 4px;
+}
+.module-desc{
+  display: block;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+.module-play{
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--thread);
+  border: none;
+  display: grid;
+  place-items: center;
+  flex: none;
+  transition: transform .25s var(--ease), background .25s var(--ease);
+}
+.module-head:hover .module-play{ transform: scale(1.08); background: var(--thread-deep); }
+.module-play svg{ width: 16px; height: 16px; }
+
+.module-body{
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .4s var(--ease);
+}
+.module-body > div{ min-height: 0; overflow: hidden; }
+.module-card.is-open .module-body{ grid-template-rows: 1fr; }
+
+.video-frame{
+  position: relative;
+  aspect-ratio: 16/9;
+  background: var(--ink);
+  margin: 0 20px 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+.video-frame iframe{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.video-spinner{
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid rgba(244,235,220,0.25);
+  border-top-color: var(--thread);
+  animation: spin 0.85s linear infinite;
+}
+@keyframes spin{ to{ transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce){
+  .video-spinner{ animation-duration: 2.4s; }
+}
+
+@media (max-width: 560px){
+  .module-head{ grid-template-columns: 44px 1fr auto; padding: 16px; gap: 12px; }
+  .module-num{ width: 36px; height: 36px; font-size: 0.95rem; }
+  .video-frame{ margin: 0 14px 16px; }
+}
+
+/* ==========================================================================
+   FAQ
+   ========================================================================== */
+.faq{ padding: 80px 0; }
+.faq-inner{ max-width: 760px; }
+.faq-list{ margin-top: 36px; }
+.faq-item{
+  border-top: 1px solid var(--line);
+}
+.faq-item:last-child{ border-bottom: 1px solid var(--line); }
+
+.faq-q{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 4px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+.faq-plus{
+  flex: none;
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+.faq-plus::before,
+.faq-plus::after{
+  content: "";
+  position: absolute;
+  background: var(--thread-deep);
+  border-radius: 2px;
+  transition: transform .3s var(--ease);
+}
+.faq-plus::before{ left: 0; top: 9px; width: 20px; height: 2.4px; }
+.faq-plus::after{ left: 9px; top: 0; width: 2.4px; height: 20px; }
+.faq-item.is-open .faq-plus::after{ transform: rotate(90deg) scaleX(0); }
+
+.faq-a{
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .35s var(--ease);
+}
+.faq-a > div{ min-height: 0; overflow: hidden; }
+.faq-item.is-open .faq-a{ grid-template-rows: 1fr; }
+.faq-a p{
+  margin: 0 4px 20px;
+  color: var(--ink-soft);
+  max-width: 60ch;
+}
+
+/* ==========================================================================
+   CONTACT / FOOTER
+   ========================================================================== */
+.contact{
+  background: var(--ink);
+  color: var(--cream-on-dark);
+  padding-top: 70px;
+  position: relative;
+}
+.contact-inner{
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 40px;
+  align-items: center;
+  padding-bottom: 60px;
+}
+.btn-wa{ margin-top: 28px; }
+.contact-list{
+  list-style: none;
+  margin: 34px 0 0;
+  padding: 24px 0 0;
+  border-top: 1px solid var(--line-on-dark);
+  display: grid;
+  gap: 14px;
+}
+.contact-list li{
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 0.98rem;
+}
+.contact-list span{ color: rgba(244,235,220,0.55); }
+.contact-list a,
+.contact-list strong{ text-decoration: none; font-weight: 600; text-align: right; }
+.contact-list a:hover{ color: var(--thread); }
+
+.contact-mark{ display: flex; justify-content: center; opacity: 0.92; }
+.contact-mark img{ width: 160px; }
+
+.footer-bottom{
+  border-top: 1px solid var(--line-on-dark);
+  padding: 20px 24px;
+  font-size: 0.85rem;
+  color: rgba(244,235,220,0.55);
+}
+
+@media (max-width: 760px){
+  .contact-inner{ grid-template-columns: 1fr; text-align: left; }
+  .contact-mark{ order: -1; }
+  .contact-mark img{ width: 120px; }
+}
