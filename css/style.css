@@ -639,3 +639,19 @@ button:focus-visible,
   .contact-mark{ order: -1; }
   .contact-mark img{ width: 120px; }
 }
+
+.logo-outline{
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: opacity 0.5s var(--ease);
+}
+.logo-outline-main{ stroke: var(--thread); stroke-width: 26; }
+.logo-outline-shadow{ stroke: var(--thread-deep); stroke-width: 22; }
+
+.logo-fill{
+  opacity: 0;
+  transition: opacity 0.6s var(--ease);
+}
+.logo-fill-main{ fill: var(--thread); }
+.logo-fill-shadow{ fill: var(--thread-deep); }
