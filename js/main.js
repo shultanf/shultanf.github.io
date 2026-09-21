@@ -43,6 +43,47 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* --------------------------------------------------------------------------
+   Hero logo mark — strokes itself in on load, then settles into the solid
+   filled mark. The outline is drawn via stroke-dashoffset, same trick as
+   the scroll thread, but the path length has to be measured at runtime
+   since it comes from a traced, real-world logo rather than a hand-drawn
+   shape with a convenient round number.
+   -------------------------------------------------------------------------- */
+function setupHeroKnotDraw(){
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; // CSS shows the settled state
+
+  const outlines = document.querySelectorAll('.logo-outline');
+  if (!outlines.length) return;
+
+  outlines.forEach((useEl, i) => {
+    const sourceId = useEl.getAttribute('href') || useEl.getAttribute('xlink:href');
+    const pathEl = sourceId && document.querySelector(sourceId);
+    if (!pathEl || typeof pathEl.getTotalLength !== 'function') return;
+
+    const length = pathEl.getTotalLength();
+    useEl.style.strokeDasharray = String(length);
+    useEl.style.strokeDashoffset = String(length);
+
+    // force a layout flush so the browser registers the starting offset
+    // before the transition below is applied — otherwise it can skip
+    // straight to the end state instead of animating.
+    useEl.getBoundingClientRect();
+
+    useEl.style.transition = `stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1) ${i * 0.12}s`;
+    requestAnimationFrame(() => {
+      useEl.style.strokeDashoffset = '0';
+    });
+  });
+
+  // once the slowest outline has finished drawing, cross-fade into the
+  // solid filled mark
+  window.setTimeout(() => {
+    document.querySelectorAll('.logo-outline').forEach(el => { el.style.opacity = '0'; });
+    document.querySelectorAll('.logo-fill').forEach(el => { el.style.opacity = '1'; });
+  }, 1300);
+}
+
+/* --------------------------------------------------------------------------
    Modul belajar — render + accordion + lazy-load video on tap
    -------------------------------------------------------------------------- */
 function renderModules(){
@@ -75,7 +116,7 @@ function renderModules(){
     head.addEventListener('click', () => {
       const isOpen = li.classList.contains('is-open');
 
-      // close any other open module except the current module [li]
+      // close any other open module for a tidier single-focus experience
       list.querySelectorAll('.module-card.is-open').forEach(open => {
         if (open !== li){
           open.classList.remove('is-open');
@@ -83,22 +124,12 @@ function renderModules(){
         }
       });
 
-      // !isOpen --> meaning we want the opposite of the state of the module
-      // for example: if we want the module to be [closed] when the module is [opened] when clicked
-
-      // in current module, 
-      // if the module is closed > open when clicked
-      // if the module is opened > close when clicked
       li.classList.toggle('is-open', !isOpen);
       head.setAttribute('aria-expanded', String(!isOpen));
 
-      
-      // Load the video if closed 
-      // Dont load the video if its already open
       if (!isOpen) loadVideo(li.querySelector('[data-video-frame]'));
     });
 
-    // Append the module created (by looping MODULE)
     list.appendChild(li);
   });
 }
@@ -239,33 +270,4 @@ function escapeHtml(str){
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
-}
-
-function setupHeroKnotDraw(){
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const outlines = document.querySelectorAll('.logo-outline');
-  if (!outlines.length) return;
-
-  outlines.forEach((useEl, i) => {
-    const sourceId = useEl.getAttribute('href') || useEl.getAttribute('xlink:href');
-    const pathEl = sourceId && document.querySelector(sourceId);
-    if (!pathEl || typeof pathEl.getTotalLength !== 'function') return;
-
-    const length = pathEl.getTotalLength();
-    useEl.style.strokeDasharray = String(length);
-    useEl.style.strokeDashoffset = String(length);
-
-    useEl.getBoundingClientRect();
-
-    useEl.style.transition = `stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1) ${i * 0.12}s`;
-    requestAnimationFrame(() => {
-      useEl.style.strokeDashoffset = '0';
-    });
-  });
-
-  window.setTimeout(() => {
-    document.querySelectorAll('.logo-outline').forEach(el => { el.style.opacity = '0'; });
-    document.querySelectorAll('.logo-fill').forEach(el => { el.style.opacity = '1'; });
-  }, 1300);
 }
